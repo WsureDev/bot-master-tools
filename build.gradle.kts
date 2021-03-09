@@ -6,8 +6,8 @@ plugins {
     id("net.mamoe.mirai-console") version "2.4.1"
 }
 
-group = "org.example"
-version = "0.1.0"
+group = "top.wsure"
+version = "0.0.1"
 
 repositories {
     mavenLocal()
