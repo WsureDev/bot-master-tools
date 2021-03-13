@@ -5,3 +5,10 @@
 /test/
 /out/
 /run/
+.run/
+
+bots/
+
+config/
+
+device.json

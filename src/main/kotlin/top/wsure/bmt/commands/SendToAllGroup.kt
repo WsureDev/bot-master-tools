@@ -8,10 +8,11 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.utils.MiraiLogger
 import top.wsure.bmt.PluginMain
-import top.wsure.bmt.utils.NotifyUtils
+import top.wsure.bmt.utils.MasterUtils.Companion.isMaster
+import top.wsure.bmt.utils.NotifyUtils.Companion.notifyAllGroup
 
 @ConsoleExperimentalApi
-object SendToAllGroup: RawCommand(
+object SendToAllGroup : RawCommand(
     PluginMain,
     "发送全部群",
     "sendToAllGroup"
@@ -22,8 +23,11 @@ object SendToAllGroup: RawCommand(
     override val prefixOptional = true
 
     override suspend fun CommandSender.onCommand(args: MessageChain) {
-        val msg = args.joinToString(" ") { it.contentToString() }
-        logger.info("发送全部群 :${msg}")
-        NotifyUtils.notifyAllGroup(this.bot!!,args)
+        if (isMaster(this.user)) {
+            val msg = args.joinToString(" ") { it.contentToString() }
+            logger.info("发送全部群 :${msg}")
+            sendMessage("发送全部群 完成，耗时:${notifyAllGroup(this.bot, args)}ms")
+            logger.info("发送全部群 :完成")
+        }
     }
 }
