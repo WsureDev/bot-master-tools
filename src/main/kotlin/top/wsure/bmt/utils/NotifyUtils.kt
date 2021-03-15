@@ -32,7 +32,9 @@ class NotifyUtils {
 
         private suspend fun notifyGroup(bot: Bot, message:Message){
             bot.groups.forEach {
-                it.sendMessage(message)
+                kotlin.runCatching {
+                    it.sendMessage(message)
+                }
                 delay(3000L+(0 .. 1000).random())
             }
         }
