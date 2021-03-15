@@ -46,13 +46,15 @@ object PluginMain : KotlinPlugin(
         AbstractPermitteeId.AnyContact.permit(this.parentPermission)
 
         globalEventChannel().subscribeAlways<MessageEvent> {
-            val sender = kotlin.runCatching {
-                this.toCommandSender()
-            }.getOrNull() ?: return@subscribeAlways
+            if(MasterConfig.useCM){
+                val sender = kotlin.runCatching {
+                    this.toCommandSender()
+                }.getOrNull() ?: return@subscribeAlways
 
-            PluginMain.launch { // Async
-                runCatching {
-                    CommandManager.executeCommand(sender, message)
+                PluginMain.launch { // Async
+                    runCatching {
+                        CommandManager.executeCommand(sender, message)
+                    }
                 }
             }
         }
