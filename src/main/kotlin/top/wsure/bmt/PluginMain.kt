@@ -13,8 +13,8 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.utils.info
-import top.wsure.bmt.commands.EditMaster
-import top.wsure.bmt.commands.SendToAllGroup
+import top.wsure.bmt.commands.LotteryMuteCmd
+import top.wsure.bmt.commands.NightNightMuteCmd
 import top.wsure.bmt.data.MasterConfig
 
 object PluginMain : KotlinPlugin(
@@ -38,10 +38,14 @@ object PluginMain : KotlinPlugin(
         logger.info { "bot-master-tools is loading" }
 
         MasterConfig.reload()
+//
+//        SendToAllGroup.register()
+//
+//        EditMaster.register()
 
-        SendToAllGroup.register()
+        LotteryMuteCmd.register()
 
-        EditMaster.register()
+        NightNightMuteCmd.register()
 
         AbstractPermitteeId.AnyContact.permit(this.parentPermission)
 
