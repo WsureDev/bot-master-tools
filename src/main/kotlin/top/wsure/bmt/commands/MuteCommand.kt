@@ -5,7 +5,7 @@ import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageChainBuilder
 import top.wsure.bmt.PluginMain
-import top.wsure.bmt.utils.memberLevelBlock
+import top.wsure.bmt.utils.memberLevelBlockWithNotify
 
 object LotteryMuteCmd : SimpleCommand(
     PluginMain,
@@ -15,7 +15,7 @@ object LotteryMuteCmd : SimpleCommand(
 ) {
 
     @Handler
-    suspend fun CommandSender.handle() = this.memberLevelBlock { member ->
+    suspend fun CommandSender.handle() = this.memberLevelBlockWithNotify { member ->
         val muteLength = (0..60 * 10).random()
         member.mute(muteLength)
         sendMessage(
@@ -36,7 +36,7 @@ object NightNightMuteCmd : SimpleCommand(
 ) {
 
     @Handler
-    suspend fun CommandSender.handle() = this.memberLevelBlock { member ->
+    suspend fun CommandSender.handle() = this.memberLevelBlockWithNotify { member ->
         val muteLength = (1..8).random()
         member.mute(muteLength*60*60)
         sendMessage(

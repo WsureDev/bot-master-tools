@@ -13,9 +13,7 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.utils.info
-import top.wsure.bmt.commands.LotteryMuteCmd
-import top.wsure.bmt.commands.NightNightMuteCmd
-import top.wsure.bmt.commands.OneVsOne
+import top.wsure.bmt.commands.*
 import top.wsure.bmt.data.MasterConfig
 
 object PluginMain : KotlinPlugin(
@@ -49,6 +47,10 @@ object PluginMain : KotlinPlugin(
         NightNightMuteCmd.register()
 
         OneVsOne.register()
+
+        OneVsOneApprove.register()
+
+        OneVsOneReject.register()
 
         AbstractPermitteeId.AnyContact.permit(this.parentPermission)
 

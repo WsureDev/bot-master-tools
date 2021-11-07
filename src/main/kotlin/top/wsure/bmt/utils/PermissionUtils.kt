@@ -1,7 +1,6 @@
 package top.wsure.bmt.utils
 
 import net.mamoe.mirai.console.command.CommandSender
-import net.mamoe.mirai.console.command.RawCommand
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.MemberPermission
@@ -22,7 +21,7 @@ fun MessageChain.getAtMembers(senderMember:Member):List<Member>{
     return senderMember.group.members.filter { persons.contains(it.id)  }
 }
 
-suspend fun CommandSender.memberLevelBlock( block:suspend CommandSender.(Member) -> Unit){
+suspend fun CommandSender.memberLevelBlockWithNotify(block:suspend CommandSender.(Member) -> Unit){
     when (this.subject) {
         is Group,
         is Member -> {
@@ -51,6 +50,19 @@ suspend fun CommandSender.memberLevelBlock( block:suspend CommandSender.(Member)
         }
         else -> {
             sendMessage("不在q群里，无法使用")
+        }
+    }
+}
+suspend fun CommandSender.memberLevelBlock(block:suspend CommandSender.(Member) -> Unit){
+    when (this.subject) {
+        is Group,
+        is Member -> {
+            val member = this.user as Member
+            if(member.isMemberLevel()){
+                // do something
+                block(member)
+
+            }
         }
     }
 }
