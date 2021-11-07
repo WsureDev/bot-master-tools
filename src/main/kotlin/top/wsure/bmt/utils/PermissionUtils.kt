@@ -1,10 +1,12 @@
 package top.wsure.bmt.utils
 
 import net.mamoe.mirai.console.command.CommandSender
+import net.mamoe.mirai.console.command.RawCommand
 import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.MemberPermission
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.MessageChainBuilder
 
 fun Member.isMemberLevel():Boolean{
@@ -13,6 +15,11 @@ fun Member.isMemberLevel():Boolean{
 
 fun Group.amITheManager():Boolean{
     return this.botPermission.level > MemberPermission.MEMBER.level
+}
+
+fun MessageChain.getAtMembers(senderMember:Member):List<Member>{
+    val persons = this.mapNotNull { it as At }.map { it.target }
+    return senderMember.group.members.filter { persons.contains(it.id)  }
 }
 
 suspend fun CommandSender.memberLevelBlock( block:suspend CommandSender.(Member) -> Unit){
