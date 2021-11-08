@@ -26,7 +26,7 @@ object SendToAllGroup : RawCommand(
         if (isMaster(this.user)) {
             val msg = args.joinToString(" ") { it.contentToString() }
             logger.info("发送全部群 :${msg}")
-            sendMessage("发送全部群 完成，耗时:${notifyAllGroup(this.bot, args)}ms")
+            sendMessage("发送全部群 完成,耗时:${notifyAllGroup(this.bot, args)}ms")
             logger.info("发送全部群 :完成")
         }
     }

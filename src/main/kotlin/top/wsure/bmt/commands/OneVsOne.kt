@@ -13,7 +13,6 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.MessageChainBuilder
 import top.wsure.bmt.PluginMain
-import top.wsure.bmt.commands.OneVsOneReject.handle
 import top.wsure.bmt.data.MasterConfig
 import top.wsure.bmt.data.OneVsOneDetail
 import top.wsure.bmt.data.cleanTimeoutCache
@@ -23,13 +22,12 @@ import top.wsure.bmt.utils.memberLevelBlock
 import top.wsure.bmt.utils.memberLevelBlockWithNotify
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 
 object OneVsOne : RawCommand(
     PluginMain,
     "oneVsOne",
-    "1v1", "单挑",
-    description = "3. 1v1 邀请一位群友与你1v1决斗，两人先被禁言10分钟，先被解禁的为获胜者"
+    "1v1", "单挑","击剑",
+    description = "3. 1v1 邀请一位群友与你1v1击剑,两人先被禁言10分钟,先被解禁的为获胜者"
 ) {
     override suspend fun CommandSender.onCommand(args: MessageChain) {
 
@@ -48,7 +46,7 @@ object OneVsOne : RawCommand(
             }
             persons = persons.filter { it.isMemberLevel() }
             if (persons.isEmpty()) {
-                sendMessage("at的全是狗管理，你是不是没事找事")
+                sendMessage("at的全是狗管理,你是不是没事找事")
                 return@memberLevelBlockWithNotify
             } else if (persons.size > 1) {
                 sendMessage("1v1只能邀请一位对手")
@@ -81,8 +79,8 @@ object OneVsOne : RawCommand(
                             .append(At(invitee))
                             .append("阁下, ")
                             .append(At(sponsor))
-                            .append("向你发起1v1决斗，是否接受？")
-                            .append("(发送 接受 或 拒绝 ,有效期3分钟)")
+                            .append("向你发起1v1击剑,是否接受？\n")
+                            .append("(发送 接受 或 拒绝 ,有效期1分钟)")
                             .build()
                     )
                 }
@@ -96,7 +94,7 @@ object OneVsOneApprove : SimpleCommand(
     PluginMain,
     "Approve",
     "接受",
-    description = "3. 接受决斗"
+    description = "3. 接受击剑"
 ) {
     @ExperimentalCommandDescriptors
     @ConsoleExperimentalApi
@@ -108,16 +106,17 @@ object OneVsOneApprove : SimpleCommand(
             MasterConfig.oneVsOneCache["${sponsor.group.id}::${sponsor.id}"] ?: inviteeDetail.copy().apply {
                 MasterConfig.oneVsOneCache["${sponsor.group.id}::${sponsor.id}"] = this
             }
+        sendMessage("击剑开始,期待两位的精彩发挥吧")
         inviteeDetail.approved = true
         sponsorDetail.approved = true
         invitee.mute(10 * 60)
         sponsor.mute(10 * 60)
         val now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         inviteeDetail.endTime =
-            LocalDateTime.now().plusSeconds((2 * 60L..8 * 60L).random()).atZone(ZoneId.systemDefault()).toInstant()
+            LocalDateTime.now().plusSeconds((1 * 60L..4 * 60L).random()).atZone(ZoneId.systemDefault()).toInstant()
                 .toEpochMilli()
         sponsorDetail.endTime =
-            LocalDateTime.now().plusSeconds((2 * 60L..8 * 60L).random()).atZone(ZoneId.systemDefault()).toInstant()
+            LocalDateTime.now().plusSeconds((1 * 60L..4 * 60L).random()).atZone(ZoneId.systemDefault()).toInstant()
                 .toEpochMilli()
         val isSponsorWin = sponsorDetail.endTime < inviteeDetail.endTime
         launch {
@@ -130,9 +129,15 @@ object OneVsOneApprove : SimpleCommand(
                         .append(At(invitee))
                         .append("在与")
                         .append(At(sponsor))
-                        .append("的决斗中获胜，趁ta还没解禁，赶紧说点垃圾话吧")
+                        .append("的击剑中获胜,站这走出来了,趁ta还没出来,赶紧说点垃圾话吧")
                         .build()
                 )
+            } else {
+                sendMessage(MessageChainBuilder()
+                    .append("角斗场门打开了,")
+                    .append(At(invitee))
+                    .append("被抬了出来")
+                    .build())
             }
             MasterConfig.oneVsOneCache.remove("${invitee.group.id}::${invitee.id}")
         }
@@ -146,9 +151,15 @@ object OneVsOneApprove : SimpleCommand(
                         .append(At(sponsor))
                         .append("在与")
                         .append(At(invitee))
-                        .append("的决斗中获胜，趁ta还没解禁，赶紧说点垃圾话吧")
+                        .append("的击剑中获胜,站这走出来了,趁ta还没出来,赶紧说点垃圾话吧")
                         .build()
                 )
+            } else {
+                sendMessage(MessageChainBuilder()
+                    .append("角斗场门打开了,")
+                    .append(At(sponsor))
+                    .append("被抬了出来")
+                    .build())
             }
             MasterConfig.oneVsOneCache.remove("${sponsor.group.id}::${sponsor.id}")
         }
@@ -159,7 +170,7 @@ object OneVsOneReject : SimpleCommand(
     PluginMain,
     "Reject",
     "拒绝",
-    description = "3. 拒绝决斗"
+    description = "3. 拒绝击剑"
 ) {
     @ExperimentalCommandDescriptors
     @ConsoleExperimentalApi
@@ -174,7 +185,7 @@ object OneVsOneReject : SimpleCommand(
                 .append(At(sponsor))
                 .append("你的邀请被")
                 .append(At(invitee))
-                .append("拒绝了，建议说点垃圾话嘲讽下ta吧")
+                .append("拒绝了,建议说点垃圾话嘲讽下ta吧")
                 .build()
         )
     }
@@ -184,16 +195,10 @@ suspend fun CommandSender.getOneVsOneSponsor(block: suspend CommandSender.(Membe
     this.memberLevelBlock { invitee ->
         cleanTimeoutCache()
         val inviteeDetail = MasterConfig.oneVsOneCache["${invitee.group.id}::${invitee.id}"]
-        if (inviteeDetail == null) {
+        if (inviteeDetail == null || inviteeDetail.sponsor == invitee.id) {
             return@memberLevelBlock
         } else {
-            if (inviteeDetail.approved) {
-                invitee.mute(
-                    (inviteeDetail.endTime - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()
-                        .toEpochMilli()).toInt() / 1000
-                )
-                sendMessage("提前越狱还起哄是吧？")
-            } else {
+            if (!inviteeDetail.approved) {
                 val sponsor = invitee.group.members[inviteeDetail.sponsor]
                 if (sponsor == null) {
                     sendMessage("发起人已经退群,GG")

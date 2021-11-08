@@ -10,11 +10,14 @@ import net.mamoe.mirai.console.permission.PermissionService.Companion.permit
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.util.ConsoleExperimentalApi
+import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.events.MessageEvent
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.utils.info
 import top.wsure.bmt.commands.*
 import top.wsure.bmt.data.MasterConfig
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 object PluginMain : KotlinPlugin(
     JvmPluginDescription(
@@ -38,13 +41,15 @@ object PluginMain : KotlinPlugin(
 
         MasterConfig.reload()
 //
-//        SendToAllGroup.register()
+        SendToAllGroup.register()
 //
-//        EditMaster.register()
+        EditMaster.register()
 
         LotteryMuteCmd.register()
 
         NightNightMuteCmd.register()
+
+        DailyMuteCmd.register()
 
         OneVsOne.register()
 
@@ -52,10 +57,12 @@ object PluginMain : KotlinPlugin(
 
         OneVsOneReject.register()
 
+        BeltAndRoadInitiative.register()
+
         AbstractPermitteeId.AnyContact.permit(this.parentPermission)
 
         globalEventChannel().subscribeAlways<MessageEvent> {
-            if(MasterConfig.useCM){
+            if (MasterConfig.useCM) {
                 val sender = kotlin.runCatching {
                     this.toCommandSender()
                 }.getOrNull() ?: return@subscribeAlways
@@ -65,6 +72,18 @@ object PluginMain : KotlinPlugin(
                         CommandManager.executeCommand(sender, message)
                     }
                 }
+            }
+        }
+        globalEventChannel().subscribeAlways<GroupMessageEvent>{
+            groupMessageEvent ->
+            val key = "${groupMessageEvent.group.id}::${groupMessageEvent.sender.id}"
+            val member = MasterConfig.oneVsOneCache[key]
+            if(member != null && member.approved){
+                groupMessageEvent.sender.mute(
+                    (member.endTime - LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()
+                        .toEpochMilli()).toInt() / 1000
+                )
+                groupMessageEvent.group.sendMessage("击剑也当逃兵是吧？抓回去")
             }
         }
 

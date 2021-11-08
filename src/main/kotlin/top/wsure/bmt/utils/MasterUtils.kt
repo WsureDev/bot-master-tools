@@ -7,12 +7,12 @@ import top.wsure.bmt.data.MasterConfig
  * FileName: MasterUtils
  * Author:   wsure
  * Date:     2021/3/13
- * Description: 
+ * Description:
  */
 class MasterUtils {
-    companion object{
-        fun isMaster(user:User?):Boolean{
-            return !(user!=null && !MasterConfig.masters.contains(user.id))
+    companion object {
+        fun isMaster(user: User?): Boolean {
+            return !(user != null && !MasterConfig.masters.contains(user.id))
         }
     }
 }
