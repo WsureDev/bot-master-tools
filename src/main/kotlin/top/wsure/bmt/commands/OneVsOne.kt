@@ -210,3 +210,39 @@ suspend fun CommandSender.getOneVsOneSponsor(block: suspend CommandSender.(Membe
             }
         }
     }
+
+
+data class DamageRecord(var sponsorHP:Int, var sponsorDamage:Int,var inviteeHP:Int,var inviteeDamage:Int){
+    override fun toString(): String {
+        return "invitee 对 sponsor造成${sponsorDamage}点伤害，sponsor剩余生命值${sponsorHP}\n" +
+            "sponsor 对 invitee造成${inviteeDamage}点伤害，invitee剩余生命值${inviteeHP}\n"
+    }
+}
+
+fun getOneVsOneProgress(sponsorWin:Boolean, count:Int):List<DamageRecord>{
+    val res = mutableListOf<DamageRecord>()
+    var sponsorHP = 100
+    var inviteeHP = 100
+    for (index in 1..count){
+        val sponsorDamage = (0 until damageRange(count,sponsorHP)).random()
+        val inviteeDamage = (0 until damageRange(count,inviteeHP)).random()
+        if(index<count){
+            sponsorHP -= sponsorDamage
+            inviteeHP -= inviteeDamage
+            res.add(DamageRecord(sponsorHP,sponsorDamage,inviteeHP,inviteeDamage))
+        } else {
+            if(sponsorWin){
+                sponsorHP -= sponsorDamage
+                res.add(DamageRecord(sponsorHP,sponsorDamage,0,inviteeHP))
+            } else {
+                inviteeHP -= inviteeDamage
+                res.add(DamageRecord(0,sponsorHP,inviteeHP,inviteeDamage))
+            }
+        }
+    }
+    return res
+}
+
+fun damageRange(count:Int,hp:Int):Int {
+    return (100 / count * 1.8).toInt().coerceAtMost(hp)
+}
