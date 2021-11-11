@@ -10,6 +10,7 @@ import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 import net.mamoe.mirai.contact.Member
 import net.mamoe.mirai.contact.NormalMember
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.Message
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.MessageChainBuilder
 import top.wsure.bmt.PluginMain
@@ -245,4 +246,14 @@ fun getOneVsOneProgress(sponsorWin:Boolean, count:Int):List<DamageRecord>{
 
 fun damageRange(count:Int,hp:Int):Int {
     return (100 / count * 1.8).toInt().coerceAtMost(hp)
+}
+
+fun DamageRecord.toRecordMessage(sponsor:Member,invitee:Member):Message{
+    return MessageChainBuilder()
+        .append(invitee.nick)
+        //todo
+        .append("")
+        .append(" ${sponsor.nick}")
+        .append("")
+        .build()
 }
