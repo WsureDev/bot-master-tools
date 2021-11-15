@@ -164,6 +164,14 @@ object OneVsOneApprove : SimpleCommand(
             }
             MasterConfig.oneVsOneCache.remove("${sponsor.group.id}::${sponsor.id}")
         }
+        val count = (sponsorDetail.endTime.coerceAtMost(inviteeDetail.endTime) - now) / (30 * 1000)
+        val records = getOneVsOneProgress(isSponsorWin,count.toInt())
+        launch {
+            for( r in records){
+                sendMessage(r.toRecordMessage(sponsor,invitee))
+                delay(30*1000)
+            }
+        }
     }
 }
 
@@ -250,10 +258,13 @@ fun damageRange(count:Int,hp:Int):Int {
 
 fun DamageRecord.toRecordMessage(sponsor:Member,invitee:Member):Message{
     return MessageChainBuilder()
-        .append(invitee.nick)
-        //todo
-        .append("")
-        .append(" ${sponsor.nick}")
-        .append("")
+        .append(getDamageDescription(sponsor.nick,invitee.nick,this.inviteeDamage))
+        .append("\n")
+        .append(getDamageDescription(invitee.nick,sponsor.nick,this.sponsorDamage))
         .build()
+}
+
+fun getDamageDescription(offensive:String,defender:String,damage:Int):String{
+    val str = MasterConfig.damageDescriptionConfig.filter { e -> damage <= e.max && damage > e.min }.map { it.descriptions }.flatten().random()
+    return str.replace("{o}",offensive).replace("{d}",defender)+",${defender}受到${damage}点伤害"
 }
