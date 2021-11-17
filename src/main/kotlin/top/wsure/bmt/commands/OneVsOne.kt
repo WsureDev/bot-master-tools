@@ -13,6 +13,7 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.Message
 import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.MessageChainBuilder
+import net.mamoe.mirai.message.data.MessageSource.Key.recall
 import top.wsure.bmt.PluginMain
 import top.wsure.bmt.data.MasterConfig
 import top.wsure.bmt.data.OneVsOneDetail
@@ -168,8 +169,9 @@ object OneVsOneApprove : SimpleCommand(
         val records = getOneVsOneProgress(isSponsorWin,count.toInt())
         launch {
             for( r in records){
-                sendMessage(r.toRecordMessage(sponsor,invitee))
+                val message = sendMessage(r.toRecordMessage(sponsor,invitee))
                 delay(30*1000)
+                message?.source?.recall()
             }
         }
     }

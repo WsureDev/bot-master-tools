@@ -23,7 +23,7 @@ object MasterConfig : AutoSavePluginConfig("bot-master-tools") {
             "{o}一剑剐掉了{d}的一片汗毛",
             "{o}一剑挑断{d}的裤腰带",
         )),
-        DamageRangeDescription(0,10, mutableListOf(
+        DamageRangeDescription(0,20, mutableListOf(
             "{o}剑尖划破了{d}的皮肤",
             "{o}还没动手,{d}自己崴了脚",
             "{o}吐出牙签,扎到了{d}脚背上",
@@ -32,14 +32,14 @@ object MasterConfig : AutoSavePluginConfig("bot-master-tools") {
             "{o}掏出一张足够色的色图",
             "{d}向{o}弹出鼻屎,却被{o}一剑拍了回来",
         )),
-        DamageRangeDescription(10,30, mutableListOf(
+        DamageRangeDescription(20,40, mutableListOf(
             "{o}在{d}面前咬碎打火机",
             "{o}对{d}使出女子防身术",
             "{o}对{d}施展军体拳",
             "{o}对{d}弹出鼻屎",
             "{o}对{d}丢出xz同款唇膏",
         )),
-        DamageRangeDescription(30,60, mutableListOf(
+        DamageRangeDescription(40,60, mutableListOf(
             "{o}施展闪电五连鞭",
             "{o}施展混元形意太极",
             "{o}使用接化发",
@@ -50,7 +50,7 @@ object MasterConfig : AutoSavePluginConfig("bot-master-tools") {
             "{o}使出点到为止的传统功夫",
             "{o}使用不讲武德的散打",
         )),
-        DamageRangeDescription(60,90, mutableListOf(
+        DamageRangeDescription(60,80, mutableListOf(
             "{o}召唤小火车创向{d}",
             "{o}召唤许昊龙施展炫步",
             "{o}扔出人机分离10米的8848",
@@ -58,7 +58,7 @@ object MasterConfig : AutoSavePluginConfig("bot-master-tools") {
             "{o}召唤嘉然小姐的狗",
             "{o}对{d}讲述s6第一个王者的故事",
         )),
-        DamageRangeDescription(90,100, mutableListOf(
+        DamageRangeDescription(80,100, mutableListOf(
             "{o}一剑挑破{d}的大动脉",
             "{o}施展滑铲从{d}身下开膛",
             "{o}嘲笑{d}打篮球像cxk",
