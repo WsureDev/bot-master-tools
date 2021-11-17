@@ -11,12 +11,12 @@ import net.mamoe.mirai.utils.MiraiLogger
 import kotlin.system.measureTimeMillis
 
 class NotifyUtils {
-    companion object{
+    companion object {
         @ConsoleExperimentalApi
         private val logger: MiraiLogger = MiraiConsole.createLogger(this::class.java.name)
 
         @ConsoleExperimentalApi
-        suspend fun notifyAllGroup(bot:Bot?, message:Message):Long{
+        suspend fun notifyAllGroup(bot: Bot?, message: Message): Long {
             val useTime = measureTimeMillis {
                 withContext(Dispatchers.Default) {
                     if (bot != null) {
@@ -30,12 +30,12 @@ class NotifyUtils {
             return useTime
         }
 
-        private suspend fun notifyGroup(bot: Bot, message:Message){
+        private suspend fun notifyGroup(bot: Bot, message: Message) {
             bot.groups.forEach {
                 kotlin.runCatching {
                     it.sendMessage(message)
                 }
-                delay(3000L+(0 .. 1000).random())
+                delay(3000L + (0..1000).random())
             }
         }
     }

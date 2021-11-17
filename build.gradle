@@ -1,0 +1,29 @@
+plugins {
+    id("net.mamoe.mirai-console") version "2.4.0" // mirai-console version
+    id 'org.jetbrains.kotlin.jvm' version "1.4.31"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "1.4.31"
+}
+
+mirai {
+    coreVersion = "2.4.0" // mirai-core version
+}
+
+group = "top.wsure.mute"
+version = "0.0.1"
+
+repositories {
+    maven{ url 'https://maven.aliyun.com/repository/central' }
+    maven{ url 'https://maven.aliyun.com/repository/public' }
+    maven{ url 'https://maven.aliyun.com/repository/google'}
+}
+
+dependencies {
+    def exposedVersion = "0.29.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
+
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
