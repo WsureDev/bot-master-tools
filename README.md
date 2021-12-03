@@ -1,5 +1,10 @@
-# mirai-console-plugin-template
+# 趣味禁言小游戏
+1. `/抽奖` :自抽0-10分钟禁言
+2. `/晚安` :自抽1-8小时精致睡眠
+3. `/1v1`或`/击剑` :at一位群友与你1v1击剑,两人先被禁言10分钟,4分钟内判定,先被解禁的为获胜者
+4. `/一带一路` :at最多5位群友与你与你一起被禁言
+5. `/jrrp`或`/ybb`或`/小火车`或`/今日人品` :召唤一辆小火车,看看你的小火车有多快吧
 
-[Mirai Console](https://github.com/mamoe/mirai-console) 插件模板, 使用 Kotlin + Gradle.
-
-[如何使用](https://github.com/project-mirai/how-to-use-plugin-template)
+## 安装方法
+参考这里 [warframe-world-state](https://github.com/WsureDev/warframe-world-state)
+## 群：[435021808](https://jq.qq.com/?_wv=1027&k=rGrjxfv0)
