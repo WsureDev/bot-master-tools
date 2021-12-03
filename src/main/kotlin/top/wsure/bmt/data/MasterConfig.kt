@@ -9,8 +9,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object MasterConfig : AutoSavePluginConfig("bot-master-tools") {
-    var masters: MutableSet<Long> by value(mutableSetOf())
-    var useCM: Boolean by value(false)
     var oneVsOneCache: MutableMap<String, OneVsOneDetail> by value(mutableMapOf())
     val dailyMuteCache: MutableMap<String, MutableMap<String, Long>> by value(mutableMapOf())
     val damageDescriptionConfig: List<DamageRangeDescription> by value(mutableListOf(

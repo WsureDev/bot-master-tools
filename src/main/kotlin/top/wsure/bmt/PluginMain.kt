@@ -40,10 +40,6 @@ object PluginMain : KotlinPlugin(
         logger.info { "bot-master-tools is loading" }
 
         MasterConfig.reload()
-//
-        SendToAllGroup.register()
-//
-        EditMaster.register()
 
         LotteryMuteCmd.register()
 
@@ -61,19 +57,6 @@ object PluginMain : KotlinPlugin(
 
         AbstractPermitteeId.AnyContact.permit(this.parentPermission)
 
-        globalEventChannel().subscribeAlways<MessageEvent> {
-            if (MasterConfig.useCM) {
-                val sender = kotlin.runCatching {
-                    this.toCommandSender()
-                }.getOrNull() ?: return@subscribeAlways
-
-                PluginMain.launch { // Async
-                    runCatching {
-                        CommandManager.executeCommand(sender, message)
-                    }
-                }
-            }
-        }
         globalEventChannel().subscribeAlways<GroupMessageEvent>{
             groupMessageEvent ->
             val key = "${groupMessageEvent.group.id}::${groupMessageEvent.sender.id}"
